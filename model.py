@@ -131,8 +131,27 @@ def make_quotes(fair_value, spread_width):
         'ask': float(fair_value + half_spread)
     }
 
-# Step 6 - execute_trade (not yet solved)
-# TODO: implement
+# Step 6 - execute_trade
+def execute_trade(state, side, bid, ask, size=1):
+    # Create a new state so the original is not modified.
+    new_state = {
+        'cash': state['cash'],
+        'inventory': state['inventory']
+    }
+
+    if side == 'buy':
+        # Counterparty buys from us at the ask.
+        # We sell inventory and receive cash.
+        new_state['cash'] += ask * size
+        new_state['inventory'] -= size
+
+    elif side == 'sell':
+        # Counterparty sells to us at the bid.
+        # We buy inventory and pay cash.
+        new_state['cash'] -= bid * size
+        new_state['inventory'] += size
+
+    return new_state
 
 # Step 7 - mark_to_market_pnl (not yet solved)
 # TODO: implement

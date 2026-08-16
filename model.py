@@ -122,8 +122,14 @@ def red_black_card_game_value(num_red, num_black):
         'stop_now': False
     }
 
-# Step 5 - make_quotes (not yet solved)
-# TODO: implement
+# Step 5 - make_quotes
+def make_quotes(fair_value, spread_width):
+    half_spread = spread_width / 2.0
+
+    return {
+        'bid': float(fair_value - half_spread),
+        'ask': float(fair_value + half_spread)
+    }
 
 # Step 6 - execute_trade (not yet solved)
 # TODO: implement

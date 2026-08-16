@@ -153,8 +153,10 @@ def execute_trade(state, side, bid, ask, size=1):
 
     return new_state
 
-# Step 7 - mark_to_market_pnl (not yet solved)
-# TODO: implement
+# Step 7 - mark_to_market_pnl
+def mark_to_market_pnl(cash, inventory, settlement_value):
+    # Remaining inventory is valued at the settlement value.
+    return float(cash + inventory * settlement_value)
 
 # Step 8 - adverse_selection_loss (not yet solved)
 # TODO: implement

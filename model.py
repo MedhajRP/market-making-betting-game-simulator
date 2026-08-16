@@ -325,6 +325,15 @@ def run_market_making_episode(
         'history': history
     }
 
-# Step 14 - summarize_episode_pnls (not yet solved)
-# TODO: implement
+# Step 14 - summarize_episode_pnls
+import numpy as np
+
+def summarize_episode_pnls(pnls):
+    pnls = np.asarray(pnls, dtype=float)
+
+    return {
+        'mean': float(np.mean(pnls)),
+        'std': float(np.std(pnls, ddof=0)),
+        'worst': float(np.min(pnls))
+    }
 

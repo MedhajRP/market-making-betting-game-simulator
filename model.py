@@ -186,8 +186,18 @@ def uncertainty_spread(base_spread, uncertainty):
     """Return a spread width >= base_spread that grows with uncertainty."""
     return float(base_spread + uncertainty)
 
-# Step 10 - inventory_skewed_quotes (not yet solved)
-# TODO: implement
+# Step 10 - inventory_skewed_quotes
+def inventory_skewed_quotes(fair_value, spread_width, inventory, skew_strength):
+    half_spread = spread_width / 2.0
+
+    # Positive inventory -> shift quotes downward.
+    # Negative inventory -> shift quotes upward.
+    shift = inventory * skew_strength
+
+    return {
+        'bid': float(fair_value - half_spread - shift),
+        'ask': float(fair_value + half_spread - shift)
+    }
 
 # Step 11 - update_fair_value_from_trade (not yet solved)
 # TODO: implement

@@ -33,8 +33,62 @@ def one_reroll_die_value(sides):
         'reroll_faces': sorted(reroll_faces)
     }
 
-# Step 3 - pay_per_reroll_die_game (not yet solved)
-# TODO: implement
+# Step 3 - pay_per_reroll_die_game
+def pay_per_reroll_die_game(sides, reroll_cost):
+    faces = list(range(1, sides + 1))
+
+    best_threshold = None
+    best_value = float('-inf')
+
+    # Suppose the threshold is t:
+    #   keep t, t+1, ..., sides
+    #   reroll 1, ..., t-1
+    #
+    # Let V be the value before a roll. If we reroll, our
+    # continuation value is V - reroll_cost.
+    #
+    # Therefore:
+    #
+    # V = [sum(t..sides) + (t-1)(V - cost)] / sides
+    # Solving for V gives the value associated with threshold t.
+    for threshold in range(1, sides + 1):
+        num_reroll_faces = threshold - 1
+
+        sum_kept = sum(faces[threshold - 1:])
+
+        denominator = sides - num_reroll_faces
+        value = (
+            sum_kept - num_reroll_faces * reroll_cost
+        ) / denominator
+
+        # A threshold t is optimal when:
+        #   faces < t  should be rerolled
+        #   faces >= t should be kept
+        #
+        # Thus the continuation value V-cost must lie between
+        # t-1 and t (with equality favoring keeping the face).
+        continuation_value = value - reroll_cost
+
+        valid = (
+            continuation_value <= threshold + 1e-12
+            and continuation_value >= threshold - 1 - 1e-12
+        )
+
+        if valid:
+            if (
+                value > best_value + 1e-12
+                or (
+                    abs(value - best_value) <= 1e-12
+                    and (best_threshold is None or threshold < best_threshold)
+                )
+            ):
+                best_value = value
+                best_threshold = threshold
+
+    return {
+        'threshold': int(best_threshold),
+        'value': float(best_value)
+    }
 
 # Step 4 - red_black_card_game_value (not yet solved)
 # TODO: implement

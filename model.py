@@ -90,8 +90,37 @@ def pay_per_reroll_die_game(sides, reroll_cost):
         'value': float(best_value)
     }
 
-# Step 4 - red_black_card_game_value (not yet solved)
-# TODO: implement
+# Step 4 - red_black_card_game_value
+def red_black_card_game_value(num_red, num_black):
+    # Base case: no cards left
+    if num_red == 0 and num_black == 0:
+        return {'value': 0.0, 'stop_now': True}
+
+    # Expected value if we continue drawing.
+    total_cards = num_red + num_black
+
+    continuation_value = 0.0
+
+    if num_red > 0:
+        red_value = red_black_card_game_value(num_red - 1, num_black)['value']
+        continuation_value += (num_red / total_cards) * (1 + red_value)
+
+    if num_black > 0:
+        black_value = red_black_card_game_value(num_red, num_black - 1)['value']
+        continuation_value += (num_black / total_cards) * (-1 + black_value)
+
+    # We can always stop and receive 0.
+    # Ties are resolved by stopping.
+    if continuation_value <= 0:
+        return {
+            'value': 0.0,
+            'stop_now': True
+        }
+
+    return {
+        'value': float(continuation_value),
+        'stop_now': False
+    }
 
 # Step 5 - make_quotes (not yet solved)
 # TODO: implement
